@@ -1,0 +1,25 @@
+=========================================================
+Modelo de configuração do banco de dados.
+
+COMO USAR:
+ 1. Copie este arquivo e renomeie a cópia para "config.properties"
+    (mesma pasta - src/main/resources/)
+ 2. Preencha os valores reais do seu projeto Supabase abaixo
+ 3. O arquivo "config.properties" (sem o .example) NUNCA deve ir
+    para o Git - ele já está no .gitignore por padrão
+=========================================================
+
+ Host do banco, no formato: db.[PROJECT-REF].supabase.co
+db.host=db.SEU-PROJECT-REF.supabase.co
+
+ Porta da conexão direta do Supabase
+db.port=5432
+
+ Nome do banco
+db.database=postgres
+
+# Usuário do banco (no Supabase, geralmente é "postgres")
+db.user=postgres
+
+# Senha definida na criação do projeto Supabase
+db.password=SUA_SENHA_AQUI
