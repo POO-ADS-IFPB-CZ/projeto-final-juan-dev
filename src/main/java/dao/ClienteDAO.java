@@ -74,4 +74,76 @@ public class ClienteDAO {
             e.printStackTrace();
         }
     }
+    public Cliente buscarPorId(int idCliente) {
+        String sql = "SELECT * FROM cliente WHERE id_cliente = ?";
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, idCliente);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return mapearCliente(rs);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar cliente por ID: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public List<Cliente> listarTodos() {
+        String sql = "SELECT * FROM cliente ORDER BY nome";
+        List<Cliente> clientes = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                clientes.add(mapearCliente(rs));
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao listar clientes: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return clientes;
+    }
+
+    public List<Cliente> buscarPorNome(String nome) {
+        String sql = "SELECT * FROM cliente WHERE nome LIKE ? ORDER BY nome";
+        List<Cliente> clientes = new ArrayList<>();
+
+        try (Connection conn = ConnectionFactory.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, "%" + nome + "%");
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    clientes.add(mapearCliente(rs));
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Erro ao buscar clientes por nome: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return clientes;
+    }
+
+    /**
+     * Converte uma linha do ResultSet em um objeto Cliente.
+     * Método auxiliar privado para evitar repetição de código.
+     */
+    private Cliente mapearCliente(ResultSet rs) throws SQLException {
+        Cliente cliente = new Cliente();
+        cliente.setIdCliente(rs.getInt("id_cliente"));
+        cliente.setNome(rs.getString("nome"));
+        cliente.setEndereco(rs.getString("endereco"));
+        cliente.setTelefone(rs.getString("telefone"));
+        cliente.setCpf(rs.getString("cpf"));
+        return cliente;
+    }
 }
