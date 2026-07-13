@@ -30,6 +30,19 @@ public class ClienteController {
             throw new Exception("Erro ao salvar cliente: " + e.getMessage());
         }
     }
+    public void excluir(int idCliente) throws Exception {
+        try{
+            clienteDAO.excluir(idCliente);
+        }catch (Exception e){
+            if(e.getCause() instanceof SQLException){
+                SQLException sqlEx = (SQLException) e.getCause();
+                if ("23503".equals(sqlEx.getSQLState())) {
+                    throw new Exception("Não é possível excluir este cliente pois ele possui veículos cadastrados.");
+                }
+            }
+            throw new Exception("Erro ao excluir cliente: " + e.getMessage());
+        }
+    }
 
     private void validar(Cliente cliente) throws Exception {
         if (cliente.getNome() == null || cliente.getNome().trim().isEmpty()) {
