@@ -43,6 +43,20 @@ public class ClienteController {
             throw new Exception("Erro ao excluir cliente: " + e.getMessage());
         }
     }
+    public List<Cliente> listarTodos() throws Exception {
+        try {
+            return clienteDAO.listarTodos();
+        } catch (Exception e) {
+            throw new Exception("Erro ao carregar clientes: " + e.getMessage());
+        }
+    }
+    public List<Cliente> buscarPorNome(String nome) throws Exception {
+        try {
+            return clienteDAO.buscarPorNome(nome);
+        } catch (Exception e) {
+            throw new Exception("Erro ao buscar clientes: " + e.getMessage());
+        }
+    }
 
     private void validar(Cliente cliente) throws Exception {
         if (cliente.getNome() == null || cliente.getNome().trim().isEmpty()) {
