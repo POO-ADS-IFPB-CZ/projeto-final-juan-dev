@@ -43,4 +43,25 @@ public class MecanicoDAO {
             stmt.executeUpdate();
         }
     }
+    public List<Mecanico> listarTodos() throws SQLException, IOException, ClassNotFoundException {
+        String sql = "SELECT m.*, e.nome_equipe FROM mecanico m JOIN equipe e ON m.id_equipe=e.id_equipe ORDER BY m.nome";
+        List<Mecanico> lista = new ArrayList<>();
+        try (Connection conn = new ConnectionFactory().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) lista.add(mapear(rs));
+        }
+        return lista;
+    }
+
+    private Mecanico mapear(ResultSet rs) throws SQLException {
+        Equipe equipe = new Equipe(rs.getInt("id_equipe"), rs.getString("nome_equipe"));
+        return new Mecanico(
+                rs.getInt("id_mecanico"),
+                rs.getString("nome"),
+                rs.getString("endereco"),
+                rs.getString("especialidade"),
+                equipe
+        );
+    }
 }
