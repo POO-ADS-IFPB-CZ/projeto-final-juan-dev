@@ -45,4 +45,54 @@ public class VeiculoDAO {
             stmt.executeUpdate();
         }
     }
+    public List<Veiculo> listarTodos() throws SQLException, IOException, ClassNotFoundException {
+        String sql = "SELECT v.*, c.nome, c.cpf FROM veiculo v JOIN cliente c ON v.id_cliente=c.id_cliente ORDER BY v.placa";
+        List<Veiculo> lista = new ArrayList<>();
+        try (Connection conn = new ConnectionFactory().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) lista.add(mapear(rs));
+        }
+        return lista;
+    }
+
+    public List<Veiculo> listarPorCliente(int idCliente) throws SQLException, IOException, ClassNotFoundException {
+        String sql = "SELECT v.*, c.nome, c.cpf FROM veiculo v JOIN cliente c ON v.id_cliente=c.id_cliente WHERE v.id_cliente=? ORDER BY v.placa";
+        List<Veiculo> lista = new ArrayList<>();
+        try (Connection conn = new ConnectionFactory().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, idCliente);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) lista.add(mapear(rs));
+            }
+        }
+        return lista;
+    }
+
+    public Veiculo buscarPorId(int id) throws SQLException, IOException, ClassNotFoundException {
+        String sql = "SELECT v.*, c.nome, c.cpf FROM veiculo v JOIN cliente c ON v.id_cliente=c.id_cliente WHERE v.id_veiculo=?";
+        try (Connection conn = new ConnectionFactory().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) return mapear(rs);
+            }
+        }
+        return null;
+    }
+
+    private Veiculo mapear(ResultSet rs) throws SQLException {
+        Cliente cliente = new Cliente();
+        cliente.setIdCliente(rs.getInt("id_cliente"));
+        cliente.setNome(rs.getString("nome"));
+        cliente.setCpf(rs.getString("cpf"));
+        return new Veiculo(
+                rs.getInt("id_veiculo"),
+                rs.getString("placa"),
+                rs.getString("modelo"),
+                rs.getInt("ano"),
+                rs.getString("cor"),
+                cliente
+        );
+    }
 }
