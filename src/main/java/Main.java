@@ -1,8 +1,5 @@
 import com.formdev.flatlaf.FlatLightLaf;
-import view.ClienteView;
-import view.EquipeView;
-import view.MecanicoView;
-import view.VeiculoView;
+import view.*;
 
 import javax.swing.*;
 
@@ -10,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         FlatLightLaf.setup();
         SwingUtilities.invokeLater(() -> {
-            VeiculoView tela = new VeiculoView();
+            PecaView tela = new PecaView();
             tela.setVisible(true);
         });
     }
