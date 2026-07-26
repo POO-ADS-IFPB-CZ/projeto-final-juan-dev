@@ -7,7 +7,7 @@ public class Main {
     public static void main(String[] args) {
         FlatLightLaf.setup();
         SwingUtilities.invokeLater(() -> {
-            ServicoView tela = new ServicoView();
+            OrdemServicoView tela = new OrdemServicoView();
             tela.setVisible(true);
         });
     }
