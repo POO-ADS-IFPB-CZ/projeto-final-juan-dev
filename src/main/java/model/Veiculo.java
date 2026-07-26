@@ -24,4 +24,8 @@ public class Veiculo {
         this.cor = cor;
         this.cliente = cliente;
     }
+    @Override
+    public String toString() {
+        return placa + " - " + modelo;
+    }
 }
