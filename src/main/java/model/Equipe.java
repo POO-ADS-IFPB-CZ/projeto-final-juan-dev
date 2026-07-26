@@ -16,4 +16,8 @@ public class Equipe {
     public Equipe(String nomeEquipe) {
         this.nomeEquipe = nomeEquipe;
     }
+    @Override
+    public String toString() {
+        return nomeEquipe;
+    }
 }
